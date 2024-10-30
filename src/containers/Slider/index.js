@@ -10,15 +10,16 @@ const Slider = () => {
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
     new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
   );
+
   const nextCard = () => {
-    setTimeout(
-      () => setIndex(index < byDateDesc.length ? index + 1 : 0),
-      5000
-    );
+    setIndex((prevIndex) => (prevIndex + 1) % byDateDesc.length);
   };
+
   useEffect(() => {
-    nextCard();
-  });
+    const timeout = setTimeout(nextCard, 5000); // Change de carte toutes les 5 secondes
+    return () => clearTimeout(timeout); // Nettoyage de l'effet
+  }, [index, byDateDesc]); // Dépendances
+
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
@@ -31,6 +32,7 @@ const Slider = () => {
           >
             <img src={event.cover} alt="forum" />
             <div className="SlideCard__descriptionContainer">
+
               <div className="SlideCard__description">
                 <h3>{event.title}</h3>
                 <p>{event.description}</p>
@@ -57,3 +59,4 @@ const Slider = () => {
 };
 
 export default Slider;
+

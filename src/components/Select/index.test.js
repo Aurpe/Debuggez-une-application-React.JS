@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, } from "@testing-library/react";
 import Select from "./index";
 
 describe("When a select is created", () => {

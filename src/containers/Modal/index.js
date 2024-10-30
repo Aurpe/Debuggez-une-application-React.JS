@@ -28,6 +28,7 @@ const Modal = ({ opened, Content, children }) => {
 
 Modal.defaultProps = {
   opened: false,
+  
 }
 
 Modal.propTypes = {
