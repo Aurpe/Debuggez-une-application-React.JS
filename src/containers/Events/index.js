@@ -11,30 +11,42 @@ const PER_PAGE = 9;
 
 const EventList = () => {
   const { data, error } = useData();
+  
   const [type, setType] = useState();
+  
   const [currentPage, setCurrentPage] = useState(1);
+  console.log(currentPage, setCurrentPage)
+
+  // Filtrage des événements par type et par page
   const filteredEvents = (
-    (!type
-      ? data?.events
-      : data?.events) || []
-  ).filter((event, index) => {
-    if (
-      (currentPage - 1) * PER_PAGE <= index &&
-      PER_PAGE * currentPage > index
-    ) {
-      return true;
-    }
-    return false;
-  });
+    data?.events.filter((event, index) => {
+      // Filtrer les événements selon le type, si un type est sélectionné
+      if (type && event.type !== type) {
+        return false;
+      }
+
+      // Filtrage par page
+      if (
+        (currentPage - 1) * PER_PAGE <= index &&
+        PER_PAGE * currentPage > index
+      ) {
+        return true;
+      }
+      return false;
+    }) || []
+  );
+
   const changeType = (evtType) => {
-    setCurrentPage(1);
+    setCurrentPage(1); // Réinitialiser la page à 1 lorsque le type change
     setType(evtType);
   };
-  const pageNumber = Math.floor((filteredEvents?.length || 0) / PER_PAGE) + 1;
+
+  const pageNumber = Math.ceil((filteredEvents?.length || 0) / PER_PAGE) + 1;
   const typeList = new Set(data?.events.map((event) => event.type));
+
   return (
     <>
-      {error && <div>An error occured</div>}
+      {error && <div>An error occurred</div>}
       {data === null ? (
         "loading"
       ) : (
@@ -61,7 +73,7 @@ const EventList = () => {
           </div>
           <div className="Pagination">
             {[...Array(pageNumber || 0)].map((_, n) => (
-              // eslint-disable-next-line react/no-array-index-key
+               // eslint-disable-next-line react/no-array-index-key
               <a key={n} href="#events" onClick={() => setCurrentPage(n + 1)}>
                 {n + 1}
               </a>
@@ -74,3 +86,4 @@ const EventList = () => {
 };
 
 export default EventList;
+

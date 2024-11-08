@@ -13,8 +13,19 @@ import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
-  const {last} = useData()
-  return <>
+  // Utilisation de useData pour récupérer les données des événements
+  const { data } = useData(); // Nous récupérons "events" et "last" depuis le contexte
+  const events = data?.events;
+
+  // Si "events" est disponible, nous trions les événements par date pour trouver le plus récent
+  const LastEvent = events
+    ? events
+        .sort((a, b) => new Date(b.date) - new Date(a.date)) // Trier par date décroissante pour obtenir le plus récent
+        .shift() // Prendre le premier événement après le tri (le plus récent)
+    : null;
+
+  return(
+    <>
     <header>
       <Menu />
     </header>
@@ -116,14 +127,16 @@ const Page = () => {
     <footer className="row">
       <div className="col presta">
         <h3>Notre derniére prestation</h3>
+       
         <EventCard
-          imageSrc={last?.cover}
-          title={last?.title}
-          date={new Date(last?.date)}
+          imageSrc={LastEvent?.cover}
+          title={LastEvent?.title}
+          date={new Date(LastEvent?.date)}
           small
           label="boom"
         />
       </div>
+
       <div className="col contact">
         <h3>Contactez-nous</h3>
         <address>45 avenue de la République, 75000 Paris</address>
@@ -155,6 +168,7 @@ const Page = () => {
       </div>
     </footer>
   </>
+  )
 }
 
 export default Page;

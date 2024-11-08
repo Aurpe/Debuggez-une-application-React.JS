@@ -16,8 +16,8 @@ const Slider = () => {
   };
 
   useEffect(() => {
-    const timeout = setTimeout(nextCard, 5000); // Change de carte toutes les 5 secondes
-    return () => clearTimeout(timeout); // Nettoyage de l'effet
+    const timeout = setTimeout(nextCard, 5000); 
+    return () => clearTimeout(timeout); 
   }, [index, byDateDesc]); // Dépendances
 
   return (
