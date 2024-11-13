@@ -15,7 +15,7 @@ const EventList = () => {
   const [type, setType] = useState();
   
   const [currentPage, setCurrentPage] = useState(1);
-  console.log(currentPage, setCurrentPage)
+  
 
   // Filtrage des événements par type et par page
   const filteredEvents = (
