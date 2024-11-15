@@ -16,23 +16,22 @@ const Slider = () => {
   };
 
   useEffect(() => {
-    const timeout = setTimeout(nextCard, 5000); 
-    return () => clearTimeout(timeout); 
+    const timeout = setTimeout(nextCard, 5000);
+
+    return () => clearTimeout(timeout);
   }, [index, byDateDesc]); // Dépendances
 
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
-        <div className="test">
+        <div key={event.id || idx}> {/* Utilisation de event.id comme clé */}
           <div
-            key={event.title}
             className={`SlideCard SlideCard--${
               index === idx ? "display" : "hide"
             }`}
           >
             <img src={event.cover} alt="forum" />
             <div className="SlideCard__descriptionContainer">
-
               <div className="SlideCard__description">
                 <h3>{event.title}</h3>
                 <p>{event.description}</p>
@@ -40,24 +39,28 @@ const Slider = () => {
               </div>
             </div>
           </div>
-          <div className="SlideCard__paginationContainer">
-            <div className="SlideCard__pagination">
-              {byDateDesc.map((_, radioIdx) => (
-                <input
-                  key={`${event.id}`}
-                  type="radio"
-                  name="radio-button"
-                  checked={idx === radioIdx}
-                />
-              ))}
+
+          {index === idx && (
+            <div className="SlideCard__paginationContainer">
+              <div className="SlideCard__pagination">
+                {byDateDesc.map((paginationEvent, radioIdx) => (
+                  <input
+                    key={paginationEvent.id || radioIdx} // Utilisation de paginationEvent.id pour la clé
+                    type="radio"
+                    name="radio-button"
+                    checked={index === radioIdx}
+                    readOnly
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
-        
       ))}
     </div>
   );
 };
 
 export default Slider;
+
 
